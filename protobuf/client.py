@@ -16,7 +16,7 @@ def get_dict(size):
 
 
 data = {'method': [], 'size': [], 'rps': []}
-sizes = [1024, 10240, 102400]
+sizes = [1024, 10240, 102400, 1048576, 10485760]
 
 
 async def fetch(loop, id, name):

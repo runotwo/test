@@ -12,7 +12,7 @@ async def fetch(loop, data):
 
 
 res={'size': [], 'time': [], 'method': []}
-sizes = [1024, 10240, 102400]
+sizes = [1024, 10240, 102400, 1048576, 10485760]
 
 
 async def go(loop):
