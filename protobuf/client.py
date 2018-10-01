@@ -23,7 +23,7 @@ async def fetch(loop, id, name):
     async with aiohttp.ClientSession(loop=loop, json_serialize=ujson.dumps) as session:
         data = helloworld_pb2.HelloRequest(name=name)
         data = data.SerializeToString()
-        r = await session.post('http://0.0.0.0:8080', data=data)
+        r = await session.post('http://130.193.48.105:8080', data=data)
         d = await r.read()
 
 

@@ -24,7 +24,7 @@ async def fetch(loop, id, request_data):
     async with aiohttp.ClientSession(loop=loop) as session:
         request_data['id'] = id
         data = umsgpack.packb(request_data)
-        r = await session.post('http://0.0.0.0:8888', data=data)
+        r = await session.post('http://130.193.48.105:8080', data=data)
         q = await r.read()
 
 

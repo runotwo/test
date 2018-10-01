@@ -13,4 +13,4 @@ async def handle(request):
 if __name__ == '__main__':
     app = web.Application()
     app.add_routes([web.post("/", handle)])
-    web.run_app(app, port=8888)
+    web.run_app(app)
