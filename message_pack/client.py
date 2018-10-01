@@ -1,9 +1,10 @@
 import asyncio
-import aiohttp
-import ujson
 import datetime
+import ujson
 from sys import getsizeof
-from protobuf import helloworld_pb2
+
+import aiohttp
+import umsgpack
 
 
 def get_dict(size):
@@ -19,12 +20,12 @@ data = {'method': [], 'size': [], 'rps': []}
 sizes = [1024, 10240, 102400]
 
 
-async def fetch(loop, id, name):
-    async with aiohttp.ClientSession(loop=loop, json_serialize=ujson.dumps) as session:
-        data = helloworld_pb2.HelloRequest(name=name)
-        data = data.SerializeToString()
-        r = await session.post('http://0.0.0.0:8080', data=data)
-        d = await r.read()
+async def fetch(loop, id, request_data):
+    async with aiohttp.ClientSession(loop=loop) as session:
+        request_data['id'] = id
+        data = umsgpack.packb(request_data)
+        r = await session.post('http://0.0.0.0:8888', data=data)
+        q = await r.read()
 
 
 loop = asyncio.get_event_loop()
@@ -32,10 +33,10 @@ for key in sizes:
     request_data = get_dict(key)
     for i in range(30):
         n = datetime.datetime.now()
-        loop.run_until_complete(asyncio.wait([fetch(loop, i, 'q'*key) for i in range(200)]))
+        loop.run_until_complete(asyncio.wait([fetch(loop, i, request_data) for i in range(200)]))
         data['rps'].append(200 / (datetime.datetime.now() - n).total_seconds())
         data['size'].append(key)
-        data['method'].append('protobuf')
+        data['method'].append('message_pack')
         print(i, sep='')
-ujson.dump(data, open('protobuf.json', 'w'))
+ujson.dump(data, open('message_pack.json', 'w'))
 loop.close()
