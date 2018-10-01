@@ -3,7 +3,7 @@ import aiohttp
 import ujson
 import datetime
 from sys import getsizeof
-from protobuf import helloworld_pb2
+import helloworld_pb2
 
 
 def get_dict(size):
